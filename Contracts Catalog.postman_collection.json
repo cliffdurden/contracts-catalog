@@ -1,0 +1,328 @@
+{
+	"info": {
+		"_postman_id": "bc3a75d6-fa77-4377-b12e-136ea9b18007",
+		"name": "Contracts Catalog",
+		"description": "Каталог контрактов  \n\nЗаявленная функциональность:\n - Возможность просмотра всех контрактов  \n - Возможность просмотра всех контрактов,  \n - Просмотр объекта контракта по идентификатору, со всеми полями,  \n - Возможность удаления зарегистрированного контракта,  \n - Добавление нового контракта в реестр контрактов с заполнением всех полей. \n   \nВозможные типы контрактов:\n - Договор купли-продажи,\n - Декларация о продаже,\n - Отчет о продаже.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Добавление договора купли-продажи",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"number\": \"{{$guid}}\",\n\t\"author\": \"J. Smith\",\n\t\"creationDate\": \"2018-07-21T18:14:23.134\",\n\t\"transactionAmount\": \"100000.00\"\n}\n\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/salecontracts/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"salecontracts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Добавление декларации о продажи",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"number\": \"{{$guid}}\",\n\t\"author\": \"J. Smith\",\n\t\"creationDate\": \"2018-07-21T18:14:23.134\",\n\t\"filingDate\": \"2018-07-20\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/saledeclarations/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"saledeclarations",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Добавление отчета о продажи",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"number\": \"{{$guid}}\",\n\t\"author\": \"J. Smith\",\n\t\"creationDate\": \"2018-07-21T18:14:23.134\",\n\t\"saleContract\": \"\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/salereports/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"salereports",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Просмотр всех договоров купли-продажи",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/salecontracts/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"salecontracts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Просмотр всех деклараций о продажи",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/salecontracts/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"salecontracts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Просмотр всех отчетов о продажи",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/salereports/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"salereports",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Поиск договора купли продажи по его номеру",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/salecontracts/search/findByNumber?number=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"salecontracts",
+						"search",
+						"findByNumber"
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Поиск декларации о продажи по ее номеру",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/saledeclarations/search/findByNumber?number=22",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"saledeclarations",
+						"search",
+						"findByNumber"
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "22"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Поиск отчета о продажи по его номеру",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/saledeclarations/search/findByNumber?number=22",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"saledeclarations",
+						"search",
+						"findByNumber"
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "22"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Просмотр всех контратов",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/salecontracts/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"salecontracts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удаление договора купли-продажи по Id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/saledeclarations/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"saledeclarations",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удаление декларации о продаже по Id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/saledeclarations/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"saledeclarations",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удаление договора отчета о продажи по Id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/saledeclarations/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"saledeclarations",
+						"6"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
