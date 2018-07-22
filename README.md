@@ -2,9 +2,8 @@
 Программа предоставляет API по работе с каталогом контрактов.
 
   **Заявленная функциональность:**  
- - Возможность просмотра всех контрактов  
  - Возможность просмотра всех контрактов,  
- - Просмотр объекта контракта по идентификатору, со всеми полями,  
+ - Просмотр объекта контракта по идентификатору со всеми полями,  
  - Возможность удаления зарегистрированного контракта,  
  - Добавление нового контракта в реестр контрактов с заполнением всех полей. 
    
@@ -32,11 +31,11 @@ curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET
 ```bash
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/salecontracts/
 ```
-Просмотр всех деклараций о продажи
+Просмотр всех деклараций о продаже
 ```bash
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/saledeclarations/
 ```
-Просмотр всех отчетов о продажи
+Просмотр всех отчетов о продаже
 ```bash
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/salereports/
 ```

@@ -36,7 +36,7 @@
 			"response": []
 		},
 		{
-			"name": "Добавление декларации о продажи",
+			"name": "Добавление декларации о продаже",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -65,7 +65,7 @@
 			"response": []
 		},
 		{
-			"name": "Добавление отчета о продажи",
+			"name": "Добавление отчета о продаже",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -76,7 +76,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"number\": \"{{$guid}}\",\n\t\"author\": \"J. Smith\",\n\t\"creationDate\": \"2018-07-21T18:14:23.134\",\n\t\"saleContract\": \"\"\n}"
+					"raw": "{\n\t\"number\": \"{{$guid}}\",\n\t\"author\": \"J. Smith\",\n\t\"creationDate\": \"2018-07-21T18:14:23.134\",\n\t\"saleContract\": \"http://localhost:8080/salecontracts/2\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/salereports/",
@@ -115,20 +115,20 @@
 			"response": []
 		},
 		{
-			"name": "Просмотр всех деклараций о продажи",
+			"name": "Просмотр всех деклараций о продаже",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "http://localhost:8080/salecontracts/",
+					"raw": "http://localhost:8080/saledeclarations/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"salecontracts",
+						"saledeclarations",
 						""
 					]
 				}
@@ -136,7 +136,7 @@
 			"response": []
 		},
 		{
-			"name": "Просмотр всех отчетов о продажи",
+			"name": "Просмотр всех отчетов о продаже",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -157,7 +157,7 @@
 			"response": []
 		},
 		{
-			"name": "Поиск договора купли продажи по его номеру",
+			"name": "Поиск договора купли-продажи по его номеру",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -185,7 +185,7 @@
 			"response": []
 		},
 		{
-			"name": "Поиск декларации о продажи по ее номеру",
+			"name": "Поиск декларации о продаже по ее номеру",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -213,27 +213,27 @@
 			"response": []
 		},
 		{
-			"name": "Поиск отчета о продажи по его номеру",
+			"name": "Поиск отчета о продаже по его номеру",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "http://localhost:8080/saledeclarations/search/findByNumber?number=22",
+					"raw": "http://localhost:8080/salereports/search/findByNumber?number=32",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"saledeclarations",
+						"salereports",
 						"search",
 						"findByNumber"
 					],
 					"query": [
 						{
 							"key": "number",
-							"value": "22"
+							"value": "32"
 						}
 					]
 				}
@@ -247,14 +247,14 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "http://localhost:8080/salecontracts/",
+					"raw": "http://localhost:8080/contracts/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"salecontracts",
+						"contracts",
 						""
 					]
 				}
@@ -268,15 +268,15 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "http://localhost:8080/saledeclarations/6",
+					"raw": "http://localhost:8080/salecontracts/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"saledeclarations",
-						"6"
+						"salecontracts",
+						"1"
 					]
 				}
 			},
@@ -304,21 +304,21 @@
 			"response": []
 		},
 		{
-			"name": "Удаление договора отчета о продажи по Id",
+			"name": "Удаление договора отчета о продаже по Id",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "http://localhost:8080/saledeclarations/6",
+					"raw": "http://localhost:8080/salereports/11",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"saledeclarations",
-						"6"
+						"salereports",
+						"11"
 					]
 				}
 			},
