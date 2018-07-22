@@ -36,7 +36,7 @@ curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET
 ```bash
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/saledeclarations/
 ```
-http://localhost:8080/salereports/
+Просмотр всех отчетов о продажи
 ```bash
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8080/salereports/
 ```
