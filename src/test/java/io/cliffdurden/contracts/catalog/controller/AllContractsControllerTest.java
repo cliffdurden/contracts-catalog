@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
+import static io.cliffdurden.contracts.catalog.util.TestUtils.*;
 import static java.time.LocalDateTime.now;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -50,14 +51,11 @@ public class AllContractsControllerTest {
     public void whenFindAllContracts_thenReturnJsonArray() throws Exception {
         SaleContract givenSaleContract = createDummySaleContract(TEST_SALE_CONTRACT_NUMBER);
         given(saleContractService.findAll())
-                .willReturn(Arrays.asList(
-                        givenSaleContract));
+                .willReturn(Arrays.asList(givenSaleContract));
         given(saleDeclarationService.findAll())
-                .willReturn(Arrays.asList(
-                        createDummySaleDeclaration(TEST_SALE_DECLARATION_NUMBER)));
+                .willReturn(Arrays.asList(createDummySaleDeclaration(TEST_SALE_DECLARATION_NUMBER)));
         given(saleReportService.findAll())
-                .willReturn(Arrays.asList(
-                        createDummySaleReport(TEST_SALE_REPORT_NUMBER, givenSaleContract)));
+                .willReturn(Arrays.asList(createDummySaleReport(TEST_SALE_REPORT_NUMBER, givenSaleContract)));
 
         mvc.perform(get("/contracts")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -69,29 +67,14 @@ public class AllContractsControllerTest {
     }
 
     private SaleContract createDummySaleContract(String number) {
-        SaleContract saleContract = new SaleContract();
-        saleContract.setNumber(number);
-        saleContract.setAuthor("Contract Test Controller");
-        saleContract.setCreationDate(now());
-        saleContract.setTransactionAmount(new BigDecimal(100));
-        return saleContract;
+        return createSaleContract(number, "Contract Test Controller", now(), new BigDecimal(100));
     }
 
     private SaleDeclaration createDummySaleDeclaration(String number) {
-        SaleDeclaration saleDeclaration = new SaleDeclaration();
-        saleDeclaration.setNumber(number);
-        saleDeclaration.setAuthor("Declaration Test Controller");
-        saleDeclaration.setCreationDate(now());
-        saleDeclaration.setFilingDate(now());
-        return saleDeclaration;
+        return createSaleDeclaration(number, "Declaration Test Controller", now(), now());
     }
 
     private SaleReport createDummySaleReport(String number, SaleContract saleContract) {
-        SaleReport saleReport = new SaleReport();
-        saleReport.setNumber(number);
-        saleReport.setAuthor("Report Test Controller");
-        saleReport.setCreationDate(now());
-        saleReport.setSaleContract(saleContract);
-        return saleReport;
+        return createSaleReport(number, "Report Test Controller", now(), saleContract);
     }
 }

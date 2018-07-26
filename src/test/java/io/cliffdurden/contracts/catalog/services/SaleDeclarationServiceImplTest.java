@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
+import static io.cliffdurden.contracts.catalog.util.TestUtils.createSaleDeclaration;
 import static java.time.LocalDateTime.now;
 import static java.util.stream.StreamSupport.stream;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -74,12 +75,10 @@ public class SaleDeclarationServiceImplTest {
     }
 
     private SaleDeclaration createDummySaleDeclaration(String number) {
-        SaleDeclaration saleDeclaration = new SaleDeclaration();
-        saleDeclaration.setNumber(number);
-        saleDeclaration.setAuthor(TEST_SALE_DECLARATION_AUTHOR);
-        saleDeclaration.setCreationDate(TEST_SALE_DECLARATION_CREATION_DATE);
-        saleDeclaration.setFilingDate(TEST_SALE_DECLARATION_FILING_DATE);
-        return saleDeclaration;
+        return createSaleDeclaration(number,
+                TEST_SALE_DECLARATION_AUTHOR,
+                TEST_SALE_DECLARATION_CREATION_DATE,
+                TEST_SALE_DECLARATION_FILING_DATE);
     }
 
     @TestConfiguration

@@ -15,6 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
 
+import static io.cliffdurden.contracts.catalog.util.TestUtils.createSaleContract;
+import static io.cliffdurden.contracts.catalog.util.TestUtils.createSaleReport;
 import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -58,7 +60,7 @@ public class SaleReportsRepositoryTest {
 
     @Test(expected = ConstraintViolationException.class)
     public void whenSaveReportWithoutData_thenShouldThrowException() {
-        entityManager.persist(createDummySaleReporWithoutData(TEST_SALE_REPORT_NUMBER));
+        entityManager.persist(createDummySaleReportWithoutData(TEST_SALE_REPORT_NUMBER));
         entityManager.flush();
     }
 
@@ -69,27 +71,15 @@ public class SaleReportsRepositoryTest {
     }
 
     private SaleReport createDummySaleReport(String number, SaleContract saleContract) {
-        SaleReport saleReport = new SaleReport();
-        saleReport.setNumber(number);
-        saleReport.setAuthor("Test");
-        saleReport.setCreationDate(now());
-        saleReport.setSaleContract(saleContract);
-        return saleReport;
+        return createSaleReport(number, "Test", now(), saleContract);
     }
 
-    private SaleReport createDummySaleReporWithoutData(String number) {
-        SaleReport saleReport = new SaleReport();
-        saleReport.setNumber(number);
-        return saleReport;
+    private SaleReport createDummySaleReportWithoutData(String number) {
+        return createSaleReport(number, null, null, null);
     }
 
     private SaleContract createDummySaleContract(String number) {
-        SaleContract saleContract = new SaleContract();
-        saleContract.setNumber(number);
-        saleContract.setAuthor("Test SaleContract");
-        saleContract.setCreationDate(now());
-        saleContract.setTransactionAmount(new BigDecimal(100));
-        return saleContract;
+        return createSaleContract(number, "Test SaleContract", now(), new BigDecimal(100));
     }
 
     @TestConfiguration

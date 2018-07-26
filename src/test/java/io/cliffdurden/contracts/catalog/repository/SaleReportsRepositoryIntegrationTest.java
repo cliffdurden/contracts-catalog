@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalDateTime;
 
+import static io.cliffdurden.contracts.catalog.util.TestUtils.createSaleContract;
 import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.springframework.http.HttpMethod.GET;
@@ -32,68 +33,54 @@ import static org.springframework.http.HttpMethod.GET;
         locations = "classpath:application-integrationtest.yml")
 public class SaleReportsRepositoryIntegrationTest {
 
+    private static final String TEST_SALE_REPORT_NUMBER = "43";
+
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
     public void testSaleReportsRestRepository() {
-        SaleContract saleContract = createSaleContract(
-                "42",
-                "I. Test",
-                now(),
-                new BigDecimal(100500));
-
-        // Добавить новый объект контракта в реестр контрактов, с заполнением всех полей.
-        URI saleContractUri = restTemplate.postForLocation("/salecontracts", saleContract);
-
+        String saleContractUri = saveSaleContract(createSaleContract(
+                "42", "I. Test", now(), new BigDecimal(100500)));
         SaleReportDto saleReportDto = new SaleReportDto(
-                "43",
-                "I.Rep Test",
-                now(),
-                saleContractUri.toString());
+                TEST_SALE_REPORT_NUMBER, "I.Rep Test", now(), saleContractUri);
 
-        // Добавить новый объект контракта в реестр контрактов, с заполнением всех полей.
-        URI uri = restTemplate.postForLocation("/salereports", saleReportDto);
+        URI saleReportUri = saveSaleReport(saleReportDto);
 
-        ParameterizedTypeReference<Resource<SaleReport>> responseType
+        ParameterizedTypeReference<Resource<SaleReport>> saleReportResource
                 = new ParameterizedTypeReference<Resource<SaleReport>>() {
         };
 
         // Просматривать объект контракта по идентификатору, со всеми полями.
         ResponseEntity<Resource<SaleReport>> getResult
-                = restTemplate.exchange(uri.toString(), GET, null, responseType);
+                = restTemplate.exchange(saleReportUri.toString(), GET, null, saleReportResource);
 
-        assertThat(saleReportDto.getNumber()).isEqualTo(getResult.getBody().getContent().getNumber());
+        assertThat(TEST_SALE_REPORT_NUMBER).isEqualTo(getResult.getBody().getContent().getNumber());
         assertThat(HttpStatus.OK.value()).isEqualTo(getResult.getStatusCode().value());
 
         // Удалять зарегистрированный объект контракта.
-        restTemplate.delete(uri.toString());
+        restTemplate.delete(saleReportUri.toString());
 
         // Проверить результат удаления объекта контракта.
         ResponseEntity<Resource<SaleReport>> resultByNumber =
                 restTemplate.exchange(
                         UriComponentsBuilder.fromPath("/salereports/search/findByNumber")
-                                .queryParam("number", saleReportDto.getNumber()).build().toString(),
+                                .queryParam("number", TEST_SALE_REPORT_NUMBER).build().toString(),
                         GET,
                         null,
-                        responseType);
+                        saleReportResource);
 
         assertThat(resultByNumber.getBody()).isEqualTo(null);
         assertThat(HttpStatus.NOT_FOUND.value()).isEqualTo(resultByNumber.getStatusCode().value());
 
     }
 
-    private SaleContract createSaleContract(
-            String number,
-            String author,
-            LocalDateTime creationDate,
-            BigDecimal transactionAmount) {
-        SaleContract saleContract = new SaleContract();
-        saleContract.setNumber(number);
-        saleContract.setAuthor(author);
-        saleContract.setCreationDate(creationDate);
-        saleContract.setTransactionAmount(transactionAmount);
-        return saleContract;
+    private String saveSaleContract(SaleContract saleContract) {
+        return restTemplate.postForLocation("/salecontracts", saleContract).toString();
+    }
+
+    private URI saveSaleReport(SaleReportDto saleReportDto) {
+        return restTemplate.postForLocation("/salereports", saleReportDto);
     }
 
     class SaleReportDto {
@@ -103,7 +90,7 @@ public class SaleReportsRepositoryIntegrationTest {
         private final LocalDateTime creationDate;
         private final String saleContract;
 
-        public SaleReportDto(String number, String author, LocalDateTime creationDate, String saleContract) {
+        SaleReportDto(String number, String author, LocalDateTime creationDate, String saleContract) {
             this.number = number;
             this.author = author;
             this.creationDate = creationDate;

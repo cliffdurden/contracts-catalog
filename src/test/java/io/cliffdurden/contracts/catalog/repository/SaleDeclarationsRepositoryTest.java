@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.persistence.PersistenceException;
 import javax.validation.ConstraintViolationException;
 
+import static io.cliffdurden.contracts.catalog.util.TestUtils.createSaleDeclaration;
 import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -64,26 +65,15 @@ public class SaleDeclarationsRepositoryTest {
     }
 
     private SaleDeclaration createDummySaleDeclaration(String number) {
-        SaleDeclaration saleDeclaration = new SaleDeclaration();
-        saleDeclaration.setNumber(number);
-        saleDeclaration.setAuthor("Test");
-        saleDeclaration.setCreationDate(now());
-        saleDeclaration.setFilingDate(now());
-        return saleDeclaration;
+        return createSaleDeclaration(number, "Test", now(), now());
     }
 
     private SaleDeclaration createDummySaleDeclarationWithoutData(String number) {
-        SaleDeclaration saleDeclaration = new SaleDeclaration();
-        saleDeclaration.setNumber(number);
-        return saleDeclaration;
+        return createSaleDeclaration(number, null, null, null);
     }
 
     private SaleDeclaration createDummySaleDeclarationWithoutFilingDate(String number) {
-        SaleDeclaration saleDeclaration = new SaleDeclaration();
-        saleDeclaration.setNumber(number);
-        saleDeclaration.setAuthor("Test");
-        saleDeclaration.setCreationDate(now());
-        return saleDeclaration;
+        return createSaleDeclaration(number, "Test", now(), null);
     }
 
     @TestConfiguration

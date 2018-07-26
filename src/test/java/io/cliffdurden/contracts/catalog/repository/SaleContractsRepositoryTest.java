@@ -15,6 +15,7 @@ import javax.persistence.PersistenceException;
 import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
 
+import static io.cliffdurden.contracts.catalog.util.TestUtils.createSaleContract;
 import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -64,26 +65,15 @@ public class SaleContractsRepositoryTest {
     }
 
     private SaleContract createDummySaleContract(String number) {
-        SaleContract saleContract = new SaleContract();
-        saleContract.setNumber(number);
-        saleContract.setAuthor("Test");
-        saleContract.setCreationDate(now());
-        saleContract.setTransactionAmount(new BigDecimal(100));
-        return saleContract;
+        return createSaleContract(number, "Dummy", now(), BigDecimal.ONE);
     }
 
     private SaleContract createDummySaleContractWithoutData(String number) {
-        SaleContract saleContract = new SaleContract();
-        saleContract.setNumber(number);
-        return saleContract;
+        return createSaleContract(number, null, null, null);
     }
 
     private SaleContract createDummySaleContractWithoutTransactionAmount(String number) {
-        SaleContract saleContract = new SaleContract();
-        saleContract.setNumber(number);
-        saleContract.setAuthor("Test");
-        saleContract.setCreationDate(now());
-        return saleContract;
+        return createSaleContract(number, "Dummy", now(), null);
     }
 
     @TestConfiguration
@@ -100,7 +90,7 @@ public class SaleContractsRepositoryTest {
         }
 
         @Bean
-        public SaleReportService saleReportService(){
+        public SaleReportService saleReportService() {
             return new SaleReportServiceImpl();
         }
     }

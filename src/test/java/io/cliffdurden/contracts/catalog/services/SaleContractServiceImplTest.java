@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
+import static io.cliffdurden.contracts.catalog.util.TestUtils.createSaleContract;
 import static java.time.LocalDateTime.now;
 import static java.util.stream.StreamSupport.stream;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -75,12 +76,11 @@ public class SaleContractServiceImplTest {
     }
 
     private SaleContract createDummySaleContract(String number) {
-        SaleContract saleContract = new SaleContract();
-        saleContract.setNumber(number);
-        saleContract.setAuthor(TEST_SALE_CONTRACT_AUTHOR);
-        saleContract.setCreationDate(TEST_SALE_CONTRACT_CREATION_DATE);
-        saleContract.setTransactionAmount(TEST_SALE_CONTRACT_TRANSACTION_AMOUNT);
-        return saleContract;
+        return createSaleContract(
+                number,
+                TEST_SALE_CONTRACT_AUTHOR,
+                TEST_SALE_CONTRACT_CREATION_DATE,
+                TEST_SALE_CONTRACT_TRANSACTION_AMOUNT);
     }
 
     @TestConfiguration

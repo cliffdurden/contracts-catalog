@@ -17,8 +17,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigDecimal;
 import java.net.URI;
-import java.time.LocalDateTime;
 
+import static io.cliffdurden.contracts.catalog.util.TestUtils.createSaleContract;
 import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.springframework.http.HttpMethod.GET;
@@ -31,55 +31,43 @@ import static org.springframework.http.HttpMethod.GET;
         locations = "classpath:application-integrationtest.yml")
 public class SaleContractsRepositoryIntegrationTest {
 
+    private static final String TEST_SALE_CONTRACT_NUMBER = "1337";
+
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
     public void testSaleContractRestRepository() {
-        SaleContract saleContract = createSaleContract(
-                "42",
-                "I. Test",
-                now(),
-                new BigDecimal(100500));
-
-        // Добавить новый объект контракта в реестр контрактов, с заполнением всех полей.
-        URI uri = restTemplate.postForLocation("/salecontracts", saleContract);
+        URI saleContractUri = saveSaleContract(createSaleContract(
+                TEST_SALE_CONTRACT_NUMBER, "I. Test", now(), new BigDecimal(100500)));
         ParameterizedTypeReference<Resource<SaleContract>> responseType
                 = new ParameterizedTypeReference<Resource<SaleContract>>() {
         };
 
         // Просматривать объект контракта по идентификатору, со всеми полями.
         ResponseEntity<Resource<SaleContract>> getResult
-                = restTemplate.exchange(uri.toString(), GET, null, responseType);
+                = restTemplate.exchange(saleContractUri.toString(), GET, null, responseType);
 
-        assertThat(saleContract.getNumber()).isEqualTo(getResult.getBody().getContent().getNumber());
+        assertThat(TEST_SALE_CONTRACT_NUMBER).isEqualTo(getResult.getBody().getContent().getNumber());
         assertThat(HttpStatus.OK.value()).isEqualTo(getResult.getStatusCode().value());
 
         // Удалять зарегистрированный объект контракта.
-        restTemplate.delete(uri.toString());
+        restTemplate.delete(saleContractUri.toString());
 
         // Проверить результат удаления объекта контракта.
         ResponseEntity<Resource<SaleContract>> resultByNumber =
                 restTemplate.exchange(
                         UriComponentsBuilder.fromPath("/salecontracts/search/findByNumber")
-                                .queryParam("number", saleContract.getNumber()).build().toString(),
+                                .queryParam("number", TEST_SALE_CONTRACT_NUMBER).build().toString(),
                         GET,
                         null,
                         responseType);
+
         assertThat(resultByNumber.getBody()).isEqualTo(null);
         assertThat(HttpStatus.NOT_FOUND.value()).isEqualTo(resultByNumber.getStatusCode().value());
     }
 
-    private SaleContract createSaleContract(
-            String number,
-            String author,
-            LocalDateTime creationDate,
-            BigDecimal transactionAmount) {
-        SaleContract saleContract = new SaleContract();
-        saleContract.setNumber(number);
-        saleContract.setAuthor(author);
-        saleContract.setCreationDate(creationDate);
-        saleContract.setTransactionAmount(transactionAmount);
-        return saleContract;
+    private URI saveSaleContract(SaleContract saleContract) {
+        return restTemplate.postForLocation("/salecontracts", saleContract);
     }
 }

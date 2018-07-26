@@ -18,6 +18,8 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
+import static io.cliffdurden.contracts.catalog.util.TestUtils.createSaleContract;
+import static io.cliffdurden.contracts.catalog.util.TestUtils.createSaleReport;
 import static java.time.LocalDateTime.now;
 import static java.util.stream.StreamSupport.stream;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -115,20 +117,16 @@ public class SaleReportServiceImplTest {
     }
 
     private SaleReport createDummySaleReport(String number, SaleContract saleContract) {
-        SaleReport saleReport = new SaleReport();
-        saleReport.setNumber(number);
-        saleReport.setAuthor(TEST_SALE_REPORT_AUTHOR);
-        saleReport.setCreationDate(TEST_SALE_REPORT_CREATION_DATE);
-        saleReport.setSaleContract(saleContract);
-        return saleReport;
+        return createSaleReport(number,
+                TEST_SALE_REPORT_AUTHOR,
+                TEST_SALE_REPORT_CREATION_DATE,
+                saleContract);
     }
 
     private SaleContract createDummySaleContract(String number) {
-        SaleContract saleContract = new SaleContract();
-        saleContract.setNumber(number);
-        saleContract.setAuthor(TEST_SALE_CONTRACT_AUTHOR);
-        saleContract.setCreationDate(TEST_SALE_CONTRACT_CREATION_DATE);
-        saleContract.setTransactionAmount(TEST_SALE_CONTRACT_TRANSACTION_AMOUNT);
-        return saleContract;
+        return createSaleContract(number,
+                TEST_SALE_CONTRACT_AUTHOR,
+                TEST_SALE_CONTRACT_CREATION_DATE,
+                TEST_SALE_CONTRACT_TRANSACTION_AMOUNT);
     }
 }

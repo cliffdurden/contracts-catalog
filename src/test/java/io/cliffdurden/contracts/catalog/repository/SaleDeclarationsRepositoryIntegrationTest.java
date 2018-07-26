@@ -16,8 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.time.LocalDateTime;
 
+import static io.cliffdurden.contracts.catalog.util.TestUtils.createSaleDeclaration;
 import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.springframework.http.HttpMethod.GET;
@@ -30,19 +30,15 @@ import static org.springframework.http.HttpMethod.GET;
         locations = "classpath:application-integrationtest.yml")
 public class SaleDeclarationsRepositoryIntegrationTest {
 
+    private static final String TEST_SALE_DECLARATION_NUMBER = "42";
+
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
     public void testSaleDeclarationsRestRepository() {
-        SaleDeclaration saleDeclaration = createSaleDeclaration(
-                "42",
-                "I Test",
-                now(),
-                now());
-
-        // Добавить новый объект контракта в реестр контрактов, с заполнением всех полей.
-        URI uri = restTemplate.postForLocation("/saledeclarations", saleDeclaration);
+        URI uri = saveSaleDeclaration(createSaleDeclaration(
+                TEST_SALE_DECLARATION_NUMBER, "I Test", now(), now()));
         ParameterizedTypeReference<Resource<SaleDeclaration>> responseType
                 = new ParameterizedTypeReference<Resource<SaleDeclaration>>() {
         };
@@ -51,38 +47,26 @@ public class SaleDeclarationsRepositoryIntegrationTest {
         ResponseEntity<Resource<SaleDeclaration>> getResult
                 = restTemplate.exchange(uri.toString(), GET, null, responseType);
 
-        assertThat(saleDeclaration.getNumber()).isEqualTo(getResult.getBody().getContent().getNumber());
+        assertThat(TEST_SALE_DECLARATION_NUMBER).isEqualTo(getResult.getBody().getContent().getNumber());
         assertThat(HttpStatus.OK.value()).isEqualTo(getResult.getStatusCode().value());
 
         // Удалить зарегистрированный объект контракта.
         restTemplate.delete(uri.toString());
 
-
         // Проверить результат удаления объекта контракта.
         ResponseEntity<Resource<SaleDeclaration>> resultByNumber =
                 restTemplate.exchange(
                         UriComponentsBuilder.fromPath("/salecontracts/search/findByNumber")
-                                .queryParam("number", saleDeclaration.getNumber()).build().toString(),
+                                .queryParam("number", TEST_SALE_DECLARATION_NUMBER).build().toString(),
                         GET,
                         null,
                         responseType);
 
         assertThat(resultByNumber.getBody()).isEqualTo(null);
         assertThat(HttpStatus.NOT_FOUND.value()).isEqualTo(resultByNumber.getStatusCode().value());
-
     }
 
-    private SaleDeclaration createSaleDeclaration(
-            String number,
-            String author,
-            LocalDateTime creationDate,
-            LocalDateTime filingDate) {
-        SaleDeclaration saleDeclaration = new SaleDeclaration();
-        saleDeclaration.setNumber(number);
-        saleDeclaration.setAuthor(author);
-        saleDeclaration.setCreationDate(creationDate);
-        saleDeclaration.setFilingDate(filingDate);
-        return saleDeclaration;
-
+    private URI saveSaleDeclaration(SaleDeclaration saleDeclaration) {
+        return restTemplate.postForLocation("/saledeclarations", saleDeclaration);
     }
 }
